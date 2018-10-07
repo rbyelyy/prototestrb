@@ -1,11 +1,11 @@
 import ex_pb2
 
-my_bottle = ex_pb2.Bottle(note='Ahoy!')
+y = ex_pb2.Bottle(note='Ahoy!')
 
-with open('my_bottle.pb', 'wb') as f:
-    f.write(my_bottle.SerializeToString())
+with open('ex.pb', 'wb') as f:
+    f.write(y.SerializeToString())
 
-with open('my_bottle.pb', 'rb') as f:
+with open('ex.pb', 'rb') as f:
     x = ex_pb2.Bottle().FromString(f.read())
 
 print(x)
