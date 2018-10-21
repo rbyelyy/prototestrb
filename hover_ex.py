@@ -4,7 +4,7 @@ import unittest
 import os
 import time
 from collections import namedtuple
-from hoverpy import HoverPy, capture
+from hoverpy import HoverPy, capture, modify
 
 
 class TestTime(unittest.TestCase):
@@ -46,10 +46,17 @@ class TestTime(unittest.TestCase):
             self.assertEquals(r1.json()["milliseconds_since_epoch"], r2.json()["milliseconds_since_epoch"])
 
     @capture("test_time.db", recordMode="once")
-    def test_time(self):
+    def test_capture_decorator(self):
         captured_time = requests.get(self.time_api_url)
         self.assertTrue("time", captured_time.json()["milliseconds_since_epoch"])
 
+    def test_modify(self):
+        with HoverPy(
+                modify=True,
+                middleware="python middleware_time.py"):
+            r = requests.get(self.time_api_url)
+
+            self.assertIn("modified 777", r.text)
 
 if __name__ == '__main__':
     unittest.main()
